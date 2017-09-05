@@ -1,5 +1,9 @@
 <html>
 <head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
     <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
     <script type="text/javascript" src="https://skyway.io/dist/v2/0.3/peer.js"></script>
     <script type="text/javascript" src="js/crypto-js/rollups/aes.js"></script>
@@ -14,11 +18,26 @@
     <div>
         <p>MyID: <span id="my-id">-</span></p>
         <p>PeerID: <span id="peer-id">-</span></p>
+        <button type="button" class="btn btn-primary" id="call-start" data-toggle="modal" data-target="#select-peer-modal">Start Call</button>
+        <button type="button" class="btn btn-primary" id="call-end">End Call</button>
     </div>
-    <div>
-        <input type="text" placeholder="PeerID" id="peer-id-input">
-        <button id="call-start">Start Call</button>
-        <button id="call-end">End Call</button>
+    <div class="modal fade" id="select-peer-modal" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Select PeerID</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="list-group" id="peer-list">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="dialog-content">
+        </div>
     </div>
 </body>
 </html>

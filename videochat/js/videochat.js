@@ -52,6 +52,15 @@ peer.on('call', function(call){
         // video要素のsrcに設定することで、映像を表示する
         $('#peer-video').prop('src', url);
     });
+
+    call.on('close', function(){
+        // 相手のIDを削除する
+        $("#peer-id").text("-");
+    });
+});
+
+peer.on('error', function(err){
+    console.error(err);
 });
 
 // DOM要素の構築が終わった場合に呼ばれるイベント
@@ -75,15 +84,15 @@ $(function() {
 
     }, function() { alert("Error!"); });
 
-    // Start Callボタンクリック時の動作
-    $('#call-start').click(function(){
-
-        // 接続先のIDをフォームから取得する
-        var peer_id = $('#peer-id-input').val();
+    // 通話開始
+    function callStart(peer_id) {
 
         // 相手と通話を開始して、自分のストリームを渡す
         var call = peer.call(peer_id, localStream);
-            
+
+        // 切断時に利用するため、コールオブジェクトを保存しておく
+        connectedCall = call;
+
         // 相手のストリームが渡された場合、このstreamイベントが呼ばれる
         // - 渡されるstreamオブジェクトは相手の映像についてのストリームオブジェクト
         call.on('stream', function(stream){
@@ -97,11 +106,48 @@ $(function() {
             // video要素のsrcに設定することで、映像を表示する
             $('#peer-video').prop('src', url);
         });
+
+        call.on('close', function(){
+            // 相手のIDを削除する
+            $("#peer-id").text("-");
+        });
+    };
+
+    // 通話終了
+    function callEnd() {
+        // ビデオ通話を終了する
+        connectedCall.close();
+
+        // 相手のIDを削除する
+        $("#peer-id").text("-");
+    }
+
+    // Start Callボタンクリック時の動作
+    $('#call-start').click(function(){
+        $('#peer-list').empty();
+        peer.listAllPeers(function(list){
+            var my_id = $('#my-id').text();
+            list.forEach(function(peer_id) {
+                if (peer_id === my_id) {
+                    return;
+                }
+
+                $('#peer-list').append($('<button></button>', {
+                    class : 'list-group-item list-group-item-action',
+                    text : peer_id,
+                    'data-dismiss' : 'modal',
+                    on : {
+                        click : function(event){
+                            callStart(peer_id);
+                        }
+                    }
+                }));
+            });
+        });
     });
 
     // End　Callボタンクリック時の動作
     $('#call-end').click(function(){
-        // ビデオ通話を終了する
-        connectedCall.close();
+        callEnd();
     });
 });
