@@ -35,7 +35,7 @@ peer.on('call', function(call){
 
     // 相手のIDを表示する
     // - 相手のIDはCallオブジェクトのpeerプロパティに存在する
-    $("#peer-id").text(call.peer);
+    $("#peer-id").text(call.remoteId);
 
     // 自分の映像ストリームを相手に渡す
     // - getUserMediaで取得したストリームオブジェクトを指定する
@@ -112,7 +112,7 @@ $(function() {
         // - 渡されるstreamオブジェクトは相手の映像についてのストリームオブジェクト
         call.on('stream', function(stream){
             // 相手のIDを表示する
-            $("#peer-id").text(call.peer);
+            $("#peer-id").text(call.remoteId);
 
             // 映像ストリームオブジェクトをURLに変換する
             // - video要素に表示できる形にするため変換している
