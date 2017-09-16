@@ -6,7 +6,7 @@ var connectedCall;  // 接続したコールを保存しておく変数
 
 // APIキーを復号するためのパスフレーズを入力する
 var passphrase = window.prompt('passphrase');
-var encryptedKey = 'U2FsdGVkX19lUxP5qgAcUFDFWSJoQl+TSjhY5HZQMD/P1PVeavTIE0JIjwNnC1KpQ0RHoc93af2/AhaRdrq5TA=='
+var encryptedKey = 'U2FsdGVkX19gt6jR7FK9+2CUCN0iCVlVHZzhryxT7cguTBfvu6UHPVymzh6E4Fjkx2PjbLG2od2D64R45vwMIw==';
 var decryptedKey = CryptoJS.AES.decrypt(encryptedKey, passphrase).toString(CryptoJS.enc.Utf8);
 console.log(decryptedKey);
 
