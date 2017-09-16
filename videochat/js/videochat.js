@@ -63,14 +63,16 @@ peer.on('error', function(err){
     console.error(err);
 });
 
-// DOM要素の構築が終わった場合に呼ばれるイベント
-// - DOM要素に結びつく設定はこの中で行なう
-$(function() {
+function setLocalStream(videoId) {
+    var audio = true;
+    var video = (videoId != null) ? { deviceId: videoId } : true;
+    var constraints = { audio: audio, video: video };
 
     // カメラ／マイクのストリームを取得する
     // - 取得が完了したら、第二引数のFunctionが呼ばれる。呼び出し時の引数は自身の映像ストリーム
     // - 取得に失敗した場合、第三引数のFunctionが呼ばれる
-    navigator.getUserMedia({audio: true, video: true}, function(stream){
+    navigator.mediaDevices.getUserMedia(constraints)
+    .then(function(stream){
 
         // このストリームを通話がかかってき場合と、通話をかける場合に利用するため、保存しておく
         localStream = stream;
@@ -82,7 +84,20 @@ $(function() {
         // video要素のsrcに設定することで、映像を表示する
         $('#my-video').prop('src', url);
 
-    }, function() { alert("Error!"); });
+        // 接続中の場合は送信しているMediaStreamを変更する
+        if (connectedCall != null && connectedCall.open) {
+            connectedCall.replaceStream(localStream);
+        }
+
+    }).catch(function(err) { alert(err); });
+}
+
+// DOM要素の構築が終わった場合に呼ばれるイベント
+// - DOM要素に結びつく設定はこの中で行なう
+$(function() {
+
+    // 自分のストリームの初期設定
+    setLocalStream();
 
     // 通話開始
     function callStart(peer_id) {
@@ -149,5 +164,30 @@ $(function() {
     // End　Callボタンクリック時の動作
     $('#call-end').click(function(){
         callEnd();
+    });
+
+    // Selecat Cameraボタンクリック時の動作
+    $('#select-camera').click(function(){
+        $('#camera-list').empty();
+        navigator.mediaDevices.enumerateDevices()
+        .then(function(devices){
+            devices.forEach(function(device){
+                if (device.kind !== 'videoinput') {
+                    return;
+                }
+                $('#camera-list').append($('<button></button>', {
+                    class : 'list-group-item list-group-item-action',
+                    text : device.label,
+                    'data-dismiss' : 'modal',
+                    on : {
+                        click : function(event){
+                            setLocalStream(device.deviceId);
+                        }
+                    }
+                }));
+            });
+        }).catch(function(err){
+            alert(err);
+        });
     });
 });
