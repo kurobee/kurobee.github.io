@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Stripe Checkout Test</title>
+</head>
+<body>
+    <h1>Stripe Checkout Test</h1>
+
+    <form action="https://cqid5w2jrf.execute-api.ap-northeast-1.amazonaws.com/dev/stripe/charges" method="POST">
+        <script
+            src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+            data-key="pk_test_KRB70RInUOLzoHuONS8bSrnq001tVPkk5c"
+            data-amount="999"
+            data-name="テスト"
+            data-description="お試し"
+            data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
+            data-locale="auto"
+            data-allow-remember-me="false"
+            data-currency="jpy"
+            data-panel-label="{{amount}}のお支払い"
+            data-label="カードで支払う（テスト）">
+        </script>
+    </form>
+
+    <b>参考</b><br>
+    <a href="https://stripe.com/docs/checkout">
+        stripe docs / Checkout
+    </a>
+</body>
+</html>
